@@ -4,7 +4,7 @@ import { TodoItem } from "../../domain/shopping-list/entities/todo-item.entity";
 export class ShoppingListRepositoryApi implements ShoppingListRepository {
   private BASE_URL = "localhost:3000";
 
-  async set(todos: Promise<TodoItem[]>) {
+  set(todos: TodoItem[]) {
     fetch(`${this.BASE_URL}/todos`, {
       method: "POST",
       body: JSON.stringify(todos),
