@@ -1,36 +1,15 @@
-// shopping-list/use-case/shopping-list.service.ts
-
 import { TodoItem } from "../entities/todo-item.entity";
-import { ShoppingListRepository } from "../repositories/todo.repository"; 
+import { ShoppingListRepository } from "../repositories/todo.repository";
 
 export class ShoppingListUseCase {
-  private repository: ShoppingListRepository;
+  constructor(private repository: ShoppingListRepository) { }
 
-  constructor(repository: ShoppingListRepository) {
-    this.repository = repository;
+  async add(todo: TodoItem[]) {
+    await this.repository.set(todo);
+    return todo;
   }
 
-  addTodo(todo: TodoItem): void {
-    this.repository.addTodo(todo);
-  }
-
-  removeTodo(index: number): void {
-    this.repository.removeTodo(index);
-  }
-
-  handleCheck(index: number): void {
-    this.repository.handleCheck(index);
-  }
-
-  moveTodo(fromIndex: number, toIndex: number): void {
-    this.repository.moveTodo(fromIndex, toIndex);
-  }
-
-  getTodos(): TodoItem[] {
-    return this.repository.getTodos();
-  }
-
-  loadTodos(): void {
-    this.repository.loadTodos();
+  async list(): Promise<TodoItem[]> {
+    return this.repository.get();
   }
 }
