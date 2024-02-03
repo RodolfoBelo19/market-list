@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DraggableTodo } from "./draggable";
@@ -50,7 +50,7 @@ export const ShoppingList: React.FC = () => {
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
   };
 
-  useState(() => {
+  useEffect(() => {
     const localTodos = localStorage.getItem("todos");
     if (localTodos) {
       setTodos(JSON.parse(localTodos));
@@ -86,7 +86,7 @@ export const ShoppingList: React.FC = () => {
             className="rounded-lg sm:mt-0 mt-5 p-0.5 border sm:w-7/12 w-full placeholder:text-sm"
             type="text"
             placeholder="Search for a todo..."
-            onChange={handleSearch} 
+            onChange={handleSearch}
           />
         </div>
         <ul className="overflow-y-auto max-h-96 p-3">
