@@ -2,21 +2,24 @@ import React, { useState, ChangeEvent, useEffect } from "react";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DraggableTodo } from "./draggable";
+import { ShoppingListRepositoryLocalStorage } from "../../../infra/local-storage/shopping-list/repositories/shopping-list.repository";
+import { ShoppingListUseCase } from "../../../domain/shopping-list/use-cases/todo.use-case";
 
 type TodoItem = {
   text: string;
   checked: boolean;
 }
 
+const shoppingListRepository = new ShoppingListRepositoryLocalStorage();
+const shoppingListUseCase = new ShoppingListUseCase(shoppingListRepository);
+
 export const ShoppingList: React.FC = () => {
   const [todo, setTodo] = useState<TodoItem>({ text: "", checked: false });
-  const [todos, setTodos] = useState<TodoItem[]>([]);
+  // const [todos, setTodos] = useState<TodoItem[]>([]);
   const [search, setSearch] = useState<string>("");
 
   const addTodo = () => {
-    if (!todo.text) return;
-    setTodos([...todos, { ...todo, checked: false }]);
-    localStorage.setItem("todos", JSON.stringify([...todos, { ...todo, checked: false }]));
+    shoppingListUseCase.addTodo(todo);
     setTodo({ text: "", checked: false });
   }
 
