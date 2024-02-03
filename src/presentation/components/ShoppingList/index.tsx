@@ -2,11 +2,16 @@ import React, { useState, ChangeEvent, useEffect } from "react";
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DraggableTodo } from "./draggable";
+import { ShoppingListRepositoryLocalStorage } from "../../../infra/local-storage/shopping-list.repository";
+import { ShoppingListUseCase } from "../../../domain/shopping-list/use-cases/todo.use-case";
 
 type TodoItem = {
   text: string;
   checked: boolean;
 }
+
+const shoppingListRepository = new ShoppingListRepositoryLocalStorage();
+const shoppingListUseCase = new ShoppingListUseCase(shoppingListRepository);
 
 export const ShoppingList: React.FC = () => {
   const [todo, setTodo] = useState<TodoItem>({ text: "", checked: false });
@@ -14,24 +19,23 @@ export const ShoppingList: React.FC = () => {
   const [search, setSearch] = useState<string>("");
 
   const addTodo = () => {
-    if (!todo.text) return;
-    setTodos([...todos, { ...todo, checked: false }]);
-    localStorage.setItem("todos", JSON.stringify([...todos, { ...todo, checked: false }]));
     setTodo({ text: "", checked: false });
+    setTodos([...todos, todo]);
+    shoppingListUseCase.add([...todos, todo]);
   }
 
   const removeTodo = (index: number) => {
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
+    shoppingListUseCase.add(newTodos);
   }
 
   const handleCheck = (index: number) => {
     const newTodos = [...todos];
     newTodos[index].checked = !newTodos[index].checked;
     setTodos(newTodos);
-    localStorage.setItem("todos", JSON.stringify(newTodos));
+    shoppingListUseCase.add(newTodos);
   }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,14 +51,19 @@ export const ShoppingList: React.FC = () => {
     const [removedTodo] = updatedTodos.splice(fromIndex, 1);
     updatedTodos.splice(toIndex, 0, removedTodo);
     setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    shoppingListUseCase.add(updatedTodos);
   };
 
   useEffect(() => {
-    const localTodos = localStorage.getItem("todos");
-    if (localTodos) {
-      setTodos(JSON.parse(localTodos));
+    const localTodos = async () => {
+      const res = await shoppingListUseCase.list();
+
+      if (Array.isArray(res)) {
+        setTodos(res);
+      }
     }
+
+    localTodos();
   }, []);
 
   return (
