@@ -2,7 +2,7 @@ import { ShoppingListRepository } from "../../domain/shopping-list/repositories/
 import { TodoItem } from "../../domain/shopping-list/entities/todo-item.entity";
 
 export class ShoppingListRepositoryApi implements ShoppingListRepository {
-  private BASE_URL = "http://localhost:3010";
+  private BASE_URL = import.meta.env.VITE_API_URL;
 
   async set(todos: TodoItem): Promise<void> {
     console.log("fora do try:", todos);
