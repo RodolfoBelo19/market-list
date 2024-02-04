@@ -113,12 +113,12 @@ export const ShoppingList: React.FC = () => {
         </div>
         <ul className="overflow-y-auto max-h-96 p-3">
           {todos
-            .filter((todoItem) => todoItem.text.includes(search))
-            .map((todoItem, index) => (
+            .filter((todoItemFilter) => todoItemFilter.text.includes(search))
+            .map((todoItemFilter, index) => (
               <DraggableTodo
-                key={`${index}-${todoItem.text}`}
+                key={`${index}-${todoItemFilter.text}`}
                 index={index}
-                todo={todoItem}
+                todo={todoItemFilter}
                 moveTodo={moveTodo}
                 handleCheck={handleCheck}
                 removeTodo={removeTodo}

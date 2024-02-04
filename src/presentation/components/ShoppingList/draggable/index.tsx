@@ -1,27 +1,35 @@
-import { useDrag, useDrop } from 'react-dnd';
+import { useDrag, useDrop } from "react-dnd";
 
 type TodoItem = {
-  _id: string;
+  _id?: string;
   text: string;
   checked: boolean;
-}
+  order?: number;
+};
 
 interface DraggableTodoProps {
   todo: TodoItem;
   index: number;
+  order: number;
   moveTodo: (fromIndex: number, toIndex: number) => void;
-  handleCheck: (id: string) => void;
-  removeTodo: (id: string) => void;
+  handleCheck: (id: string | undefined) => Promise<void>;
+  removeTodo: (id: string | undefined) => Promise<void>;
 }
 
-export const DraggableTodo: React.FC<DraggableTodoProps> = ({ todo, index, moveTodo, handleCheck, removeTodo }) => {
+export const DraggableTodo: React.FC<DraggableTodoProps> = ({
+  todo,
+  index,
+  moveTodo,
+  handleCheck,
+  removeTodo,
+}) => {
   const [, ref] = useDrag({
-    type: 'TODO',
+    type: "TODO",
     item: { index },
   });
 
   const [, drop] = useDrop({
-    accept: 'TODO',
+    accept: "TODO",
     hover: (draggedItem: { index: number }) => {
       if (draggedItem.index !== index) {
         moveTodo(draggedItem.index, index);
@@ -31,7 +39,10 @@ export const DraggableTodo: React.FC<DraggableTodoProps> = ({ todo, index, moveT
   });
 
   return (
-    <li ref={(node) => ref(drop(node))} className="flex justify-between items-center py-2">
+    <li
+      ref={(node) => ref(drop(node))}
+      className="flex justify-between items-center py-2"
+    >
       <label className="space-x-4 cursor-pointer">
         <input
           type="checkbox"
@@ -44,7 +55,12 @@ export const DraggableTodo: React.FC<DraggableTodoProps> = ({ todo, index, moveT
           <span>{todo.text}</span>
         )}
       </label>
-      <button className="border border-sky-500 p-1 text-xs" onClick={() => removeTodo(todo._id)}>Remove</button>
+      <button
+        className="border border-sky-500 p-1 text-xs"
+        onClick={() => removeTodo(todo._id)}
+      >
+        Remove
+      </button>
     </li>
   );
 };
