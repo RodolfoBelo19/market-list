@@ -1,16 +1,18 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { DraggableTodo } from "./draggable";
-import { ShoppingListRepositoryLocalStorage } from "../../../infra/local-storage/shopping-list.repository";
 import { ShoppingListUseCase } from "../../../domain/shopping-list/use-cases/todo.use-case";
+import { ShoppingListRepositoryApi } from "../../../infra/api-mongo/shopping-list.repository";
 
 type TodoItem = {
+  _id?: string;
   text: string;
+  order?: number;
   checked: boolean;
-}
+};
 
-const shoppingListRepository = new ShoppingListRepositoryLocalStorage();
+const shoppingListRepository = new ShoppingListRepositoryApi();
 const shoppingListUseCase = new ShoppingListUseCase(shoppingListRepository);
 
 export const ShoppingList: React.FC = () => {
@@ -18,52 +20,62 @@ export const ShoppingList: React.FC = () => {
   const [todos, setTodos] = useState<TodoItem[]>([]);
   const [search, setSearch] = useState<string>("");
 
-  const addTodo = () => {
+  const addTodo = async () => {
     setTodo({ text: "", checked: false });
-    setTodos([...todos, todo]);
-    shoppingListUseCase.add([...todos, todo]);
-  }
+    const order = todos.length;
+    await shoppingListUseCase.add({ ...todo, order });
+    listTodos();
+  };
 
-  const removeTodo = (index: number) => {
-    const newTodos = [...todos];
-    newTodos.splice(index, 1);
-    setTodos(newTodos);
-    shoppingListUseCase.add(newTodos);
-  }
+  const removeTodo = async (id: string) => {
+    await shoppingListUseCase.remove(id);
+    listTodos();
+  };
 
-  const handleCheck = (index: number) => {
-    const newTodos = [...todos];
-    newTodos[index].checked = !newTodos[index].checked;
-    setTodos(newTodos);
-    shoppingListUseCase.add(newTodos);
-  }
+  const handleCheck = async (id: string) => {
+    for (const todoItem of todos) {
+      if (todoItem._id === id) {
+        todoItem.checked = !todoItem.checked;
+        try {
+          await shoppingListUseCase.update(id, todoItem);
+          listTodos();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTodo({ ...todo, text: e.target.value });
-  }
+  };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-  }
+  };
 
-  const moveTodo = (fromIndex: number, toIndex: number) => {
+  const moveTodo = async (fromIndex: number, toIndex: number) => {
     const updatedTodos = [...todos];
     const [removedTodo] = updatedTodos.splice(fromIndex, 1);
     updatedTodos.splice(toIndex, 0, removedTodo);
     setTodos(updatedTodos);
-    shoppingListUseCase.add(updatedTodos);
+
+    const movedTodoId = updatedTodos[toIndex]._id;
+    console.log("Moved Todo ID:", movedTodoId);
+    if (!movedTodoId) return;
+    await shoppingListUseCase.reorder([movedTodoId], toIndex);
+  };
+
+  const listTodos = async () => {
+    const res = await shoppingListUseCase.list();
+
+    if (Array.isArray(res)) {
+      setTodos(res);
+    }
   };
 
   useEffect(() => {
-    const localTodos = async () => {
-      const res = await shoppingListUseCase.list();
-
-      if (Array.isArray(res)) {
-        setTodos(res);
-      }
-    }
-
-    localTodos();
+    listTodos();
   }, []);
 
   return (
@@ -73,7 +85,8 @@ export const ShoppingList: React.FC = () => {
           <img
             className="w-20"
             src="https://img.icons8.com/ios/452/shopping-cart.png"
-            alt="shopping bag" />
+            alt="shopping bag"
+          />
           <h1 className="text-center sm:text-4xl text-lg">Shopping List</h1>
         </div>
         <div className="sm:flex flex-wrap-reverse gap-4 items-center justify-center p-5 fixed left-0 right-0 pt-24">
@@ -100,7 +113,7 @@ export const ShoppingList: React.FC = () => {
         </div>
         <ul className="overflow-y-auto max-h-96 p-3">
           {todos
-            .filter(todoItem => todoItem.text.includes(search))
+            .filter((todoItem) => todoItem.text.includes(search))
             .map((todoItem, index) => (
               <DraggableTodo
                 key={`${index}-${todoItem.text}`}
