@@ -1,6 +1,7 @@
 import { useDrag, useDrop } from 'react-dnd';
 
 type TodoItem = {
+  _id: string;
   text: string;
   checked: boolean;
 }
@@ -9,8 +10,8 @@ interface DraggableTodoProps {
   todo: TodoItem;
   index: number;
   moveTodo: (fromIndex: number, toIndex: number) => void;
-  handleCheck: (index: number) => void;
-  removeTodo: (index: number) => void;
+  handleCheck: (id: string) => void;
+  removeTodo: (id: string) => void;
 }
 
 export const DraggableTodo: React.FC<DraggableTodoProps> = ({ todo, index, moveTodo, handleCheck, removeTodo }) => {
@@ -35,7 +36,7 @@ export const DraggableTodo: React.FC<DraggableTodoProps> = ({ todo, index, moveT
         <input
           type="checkbox"
           checked={todo.checked}
-          onChange={() => handleCheck(index)}
+          onChange={() => handleCheck(todo._id)}
         />
         {todo.checked ? (
           <span className="line-through">{todo.text}</span>
@@ -43,7 +44,7 @@ export const DraggableTodo: React.FC<DraggableTodoProps> = ({ todo, index, moveT
           <span>{todo.text}</span>
         )}
       </label>
-      <button className="border border-sky-500 p-1 text-xs" onClick={() => removeTodo(index)}>Remove</button>
+      <button className="border border-sky-500 p-1 text-xs" onClick={() => removeTodo(todo._id)}>Remove</button>
     </li>
   );
 };
