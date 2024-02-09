@@ -12,8 +12,8 @@ interface DraggableTodoProps {
   index: number;
   order: number;
   moveTodo: (fromIndex: number, toIndex: number) => void;
-  handleCheck: (id: string | undefined) => Promise<void>;
-  removeTodo: (id: string | undefined) => Promise<void>;
+  handleCheck: (id: string) => Promise<void>;
+  removeTodo: (id: string) => Promise<void>;
 }
 
 export const DraggableTodo: React.FC<DraggableTodoProps> = ({
@@ -47,7 +47,7 @@ export const DraggableTodo: React.FC<DraggableTodoProps> = ({
         <input
           type="checkbox"
           checked={todo.checked}
-          onChange={() => handleCheck(todo._id)}
+          onChange={() => handleCheck(todo?._id || "")}
         />
         {todo.checked ? (
           <span className="line-through">{todo.text}</span>
@@ -57,7 +57,7 @@ export const DraggableTodo: React.FC<DraggableTodoProps> = ({
       </label>
       <button
         className="border border-sky-500 p-1 text-xs"
-        onClick={() => removeTodo(todo._id)}
+        onClick={() => removeTodo(todo?._id || "")}
       >
         Remove
       </button>

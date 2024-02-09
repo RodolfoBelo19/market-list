@@ -116,6 +116,7 @@ export const ShoppingList: React.FC = () => {
             .filter((todoItemFilter) => todoItemFilter.text.includes(search))
             .map((todoItemFilter, index) => (
               <DraggableTodo
+                order={todoItemFilter.order || 0}
                 key={`${index}-${todoItemFilter.text}`}
                 index={index}
                 todo={todoItemFilter}
