@@ -117,7 +117,7 @@ export const ShoppingList: React.FC = () => {
         </div>
         <ul className="overflow-y-auto max-h-96 p-3">
           {todos
-            .filter((todoItemFilter) => todoItemFilter.text.includes(search))
+            .filter((todoItemFilter) => todoItemFilter.text.toLowerCase().includes(search))
             .map((todoItemFilter, index) => (
               <DraggableTodo
                 order={todoItemFilter.order || 0}
