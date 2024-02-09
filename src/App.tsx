@@ -1,6 +1,7 @@
-import { ShoppingList } from './presentation/components/ShoppingList'
+import { ShoppingList } from "./presentation/components/ShoppingList";
 
-function App() { return <ShoppingList /> }
+function App() {
+  return <ShoppingList />;
+}
 
-
-export default App
+export default App;
