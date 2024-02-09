@@ -15,7 +15,7 @@ export class ShoppingListRepositoryApi implements ShoppingListRepository {
           "Content-Type": "application/json",
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`Failed to set todos. Status: ${response.status}`);
       }
@@ -84,7 +84,9 @@ export class ShoppingListRepositoryApi implements ShoppingListRepository {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to update todo order. Status: ${response.status}`);
+        throw new Error(
+          `Failed to update todo order. Status: ${response.status}`
+        );
       }
     } catch (error) {
       console.error("Error updating todo order:", error);
