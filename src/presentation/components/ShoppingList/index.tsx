@@ -51,19 +51,23 @@ export const ShoppingList: React.FC = () => {
   };
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    const { value } = e.target;
+    const search = value.toLowerCase();
+    setSearch(search);
   };
 
-    const moveTodo = async (fromIndex: number, toIndex: number) => {
-      const updatedTodos = [...todos];
-      const [removedTodo] = updatedTodos.splice(fromIndex, 1);
-      updatedTodos.splice(toIndex, 0, removedTodo);
-      setTodos(updatedTodos);
+  const moveTodo = async (fromIndex: number, toIndex: number) => {
+    const updatedTodos = [...todos];
+    const [removedTodo] = updatedTodos.splice(fromIndex, 1);
+    updatedTodos.splice(toIndex, 0, removedTodo);
+    setTodos(updatedTodos);
 
-      const ids = updatedTodos.map((todo) => todo._id).filter((id) => id !== undefined) as string[];
-      const orders = updatedTodos.map((_, index) => index);
-      await shoppingListUseCase.reorder(ids, orders);
-    };
+    const ids = updatedTodos
+      .map((todo) => todo._id)
+      .filter((id) => id !== undefined) as string[];
+    const orders = updatedTodos.map((_, index) => index);
+    await shoppingListUseCase.reorder(ids, orders);
+  };
 
   const listTodos = async () => {
     const res = await shoppingListUseCase.list();
