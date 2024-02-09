@@ -1,7 +1,7 @@
-import { ShoppingList } from "./presentation/components/ShoppingList";
+import { MarketList } from "./presentation/components/MarketList";
 
 function App() {
-  return <ShoppingList />;
+  return <MarketList />;
 }
 
 export default App;

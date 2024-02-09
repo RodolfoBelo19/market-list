@@ -1,6 +1,6 @@
 import { TodoItem } from "../entities/todo-item.entity";
 
-export interface ShoppingListRepository {
+export interface MarketListRepository {
   set(todo: TodoItem): void;
   get(): Promise<TodoItem[]>;
   remove(id: string): void;

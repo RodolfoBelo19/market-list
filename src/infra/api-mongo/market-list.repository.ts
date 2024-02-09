@@ -1,7 +1,7 @@
-import { ShoppingListRepository } from "../../domain/shopping-list/repositories/todo.repository";
-import { TodoItem } from "../../domain/shopping-list/entities/todo-item.entity";
+import { MarketListRepository } from "../../domain/market-list/repositories/todo.repository";
+import { TodoItem } from "../../domain/market-list/entities/todo-item.entity";
 
-export class ShoppingListRepositoryApi implements ShoppingListRepository {
+export class MarketListRepositoryApi implements MarketListRepository {
   private BASE_URL = import.meta.env.VITE_API_URL;
 
   async set(todos: TodoItem): Promise<void> {

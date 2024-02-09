@@ -1,9 +1,7 @@
-import { ShoppingListRepository } from "../../domain/shopping-list/repositories/todo.repository";
-import { TodoItem } from "../../domain/shopping-list/entities/todo-item.entity";
+import { MarketListRepository } from "../../domain/market-list/repositories/todo.repository";
+import { TodoItem } from "../../domain/market-list/entities/todo-item.entity";
 
-export class ShoppingListRepositoryLocalStorage
-  implements ShoppingListRepository
-{
+export class MarketListRepositoryLocalStorage implements MarketListRepository {
   private STORAGE_KEY = "todos";
 
   set(todos: TodoItem): void {
