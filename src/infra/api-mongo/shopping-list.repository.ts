@@ -73,11 +73,11 @@ export class ShoppingListRepositoryApi implements ShoppingListRepository {
     }
   }
 
-  async updateOrder(ids: string[], order: number): Promise<void> {
+  async updateOrder(ids: string[], orders: number[]): Promise<void> {
     try {
-      const response = await fetch(`${this.BASE_URL}/todos/reorder/`, {
+      const response = await fetch(`${this.BASE_URL}/todos`, {
         method: "PATCH",
-        body: JSON.stringify({ ids, order }),
+        body: JSON.stringify({ ids, orders }),
         headers: {
           "Content-Type": "application/json",
         },

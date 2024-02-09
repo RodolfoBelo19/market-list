@@ -21,7 +21,7 @@ export class ShoppingListUseCase {
     return this.repository.patch(id, todo);
   }
 
-  async reorder(ids: string[], order: number): Promise<void> {
+  async reorder(ids: string[], order: number[]): Promise<void> {
     await this.repository.updateOrder(ids, order);
   }
 }

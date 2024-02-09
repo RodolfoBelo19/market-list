@@ -5,5 +5,5 @@ export interface ShoppingListRepository {
   get(): Promise<TodoItem[]>;
   remove(id: string): void;
   patch(id: string, todo: TodoItem): void;
-  updateOrder(ids: string[], orders: number): void;
+  updateOrder(ids: string[], orders: number[]): void;
 }
