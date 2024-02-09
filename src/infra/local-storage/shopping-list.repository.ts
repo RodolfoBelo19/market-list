@@ -25,7 +25,7 @@ export class ShoppingListRepositoryLocalStorage
     }
   }
 
-  updateOrder(ids: string[], orders: number): void {
+  updateOrder(ids: string[], orders: number[]): void {
     for (const [, id] of ids.entries()) {
       const getItemId = localStorage.getItem(id);
       if (getItemId) {
