@@ -18,7 +18,6 @@ const marketListUseCase = new MarketListUseCase(marketListRepository);
 export const MarketList: React.FC = () => {
   const [todo, setTodo] = useState<TodoItem>({ text: "", checked: false });
   const [todos, setTodos] = useState<TodoItem[]>([]);
-  const [search, setSearch] = useState<string>("");
 
   const addTodo = async () => {
     setTodo({ text: "", checked: false });
@@ -50,12 +49,6 @@ export const MarketList: React.FC = () => {
     setTodo({ ...todo, text: e.target.value });
   };
 
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const search = value.toLowerCase();
-    setSearch(search);
-  };
-
   const moveTodo = async (fromIndex: number, toIndex: number) => {
     const updatedTodos = [...todos];
     const [removedTodo] = updatedTodos.splice(fromIndex, 1);
@@ -84,7 +77,7 @@ export const MarketList: React.FC = () => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="space-y-4 flex flex-col gap-36 mx-auto max-w-md p-5">
+      <div className="space-y-4 flex flex-col gap-24 mx-auto max-w-md p-5">
         <div className="flex items-center justify-center gap-4">
           <img
             className="w-20"
@@ -109,18 +102,9 @@ export const MarketList: React.FC = () => {
               Add
             </button>
           </div>
-          <input
-            className="rounded-lg sm:mt-0 mt-5 p-0.5 border sm:w-7/12 w-full placeholder:text-sm"
-            type="text"
-            placeholder="Search for a todo..."
-            onChange={handleSearch}
-          />
         </div>
-        <ul className="overflow-y-auto max-h-96 p-3">
+        <ul className="overflow-y-auto max-h-[550px] p-3">
           {todos
-            .filter((todoItemFilter) =>
-              todoItemFilter.text.toLowerCase().includes(search)
-            )
             .map((todoItemFilter, index) => (
               <DraggableTodo
                 order={todoItemFilter.order || 0}

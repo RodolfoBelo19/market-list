@@ -41,10 +41,15 @@ export const DraggableTodo: React.FC<DraggableTodoProps> = ({
   return (
     <li
       ref={(node) => ref(drop(node))}
-      className="flex justify-between items-center py-2"
+      className={
+        `flex justify-between items-center p-2 mb-2 rounded-xl border-2 border-zinc-400
+        ${todo.checked ? "bg-zinc-500" : ""}
+        `
+      }
     >
-      <label className="space-x-4 cursor-pointer">
+      <label className="space-x-4 cursor-pointer w-full">
         <input
+          className="cursor-pointer"
           type="checkbox"
           checked={todo.checked}
           onChange={() => handleCheck(todo?._id || "")}
