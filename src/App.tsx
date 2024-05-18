@@ -1,4 +1,3 @@
-import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { persistQueryClient, PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import localforage from "localforage";
@@ -7,12 +6,11 @@ import { MarketList } from "./presentation/components/MarketList";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false, // Don't retry failed queries
+      retry: false,
     },
   },
 });
 
-// Custom persister using localforage
 const localStoragePersister = {
   persistClient: async (client: any) => {
     try {
@@ -39,7 +37,7 @@ const localStoragePersister = {
 
 persistQueryClient({
   queryClient,
-  persister: localStoragePersister,
+  persister: localStoragePersister as any,
   dehydrateOptions: {
     shouldDehydrateQuery: () => true,
   },
@@ -50,7 +48,7 @@ const App = () => (
     <PersistQueryClientProvider
       client={queryClient}
       persistOptions={{
-        persister: localStoragePersister,
+        persister: localStoragePersister as any,
       }}
     >
       <MarketList />
