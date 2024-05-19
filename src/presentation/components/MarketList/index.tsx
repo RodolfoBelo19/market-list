@@ -6,6 +6,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { MarketListUseCase } from "../../../domain/market-list/use-cases/todo.use-case";
 import { MarketListRepositoryApi } from "../../../infra/api-mongo/market-list.repository";
 import errorImage from "../../../assets/ErrorPage.gif";
+import marketImage from "../../../assets/market.png";
+import plusIcon from "../../../assets/plus.svg";
 
 type TodoItem = {
   _id?: string;
@@ -117,24 +119,24 @@ export const MarketList: React.FC = () => {
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="space-y-4 flex flex-col mx-auto max-w-md p-5">
-        <div className="flex items-center justify-center gap-4">
-          <img className="w-20" src="/cart.png" alt="market bag" />
-          <h1 className="text-center sm:text-4xl text-lg">Market List</h1>
+        <div className="flex flex-col items-center justify-center">
+          <img className="w-32" src={marketImage} alt="market bag" />
+          <h1 className="text-3xl text-green-800 font-bold">Market List</h1>
         </div>
-        <div className="sm:flex flex-wrap-reverse gap-4 items-center justify-center p-5">
-          <div className="flex items-center space-x-4 sm:w-7/12 w-full">
+        <div className="sm:flex flex-wrap-reverse gap-4 items-center justify-center p-3">
+          <div className="flex items-center space-x-4 max-w-sm w-full">
             <input
-              className="rounded-lg p-0.5 border w-full"
+              className="rounded-xl p-0.5 border-4 shadow-md border-green-500 bg-green-50 text-black w-full"
               type="text"
               value={todo.text}
               onChange={handleInputChange}
             />
-            <button
-              className="border py-0 border-green-400 hover:border-green-200 rounded-lg px-2"
+            <img
               onClick={addTodo}
-            >
-              Add
-            </button>
+              src={plusIcon}
+              alt="plus"
+              className="w-7 h-7 cursor-pointer"
+            />
           </div>
         </div>
 

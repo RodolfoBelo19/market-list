@@ -9,7 +9,11 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-image: linear-gradient(rgba(129, 238, 165, 0.9), rgba(255, 255, 255, 0.7)), url('./assets/fruits.avif');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
