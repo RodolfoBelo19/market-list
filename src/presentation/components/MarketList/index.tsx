@@ -152,7 +152,7 @@ export const MarketList: React.FC = () => {
             </div>
           </div>
         ) : (
-          <ul className="overflow-y-auto max-h-[450px] p-3">
+          <ul className="overflow-y-auto max-h-[370px] p-3">
             {todos.map((todoItemFilter, index) => (
               <DraggableTodo
                 order={todoItemFilter.order || 0}
