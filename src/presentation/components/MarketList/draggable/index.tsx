@@ -1,14 +1,10 @@
 import { useDrag, useDrop } from "react-dnd";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
-  ArchiveBoxXMarkIcon,
-  ChevronDownIcon,
   EllipsisVerticalIcon,
   PencilIcon,
-  Square2StackIcon,
   TrashIcon,
 } from "@heroicons/react/16/solid";
-import trash from "../../../../assets/trash.svg";
 
 type TodoItem = {
   _id?: string;
